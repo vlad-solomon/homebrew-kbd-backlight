@@ -1,3 +1,4 @@
 kbd
+build/
 *.log
 .DS_Store

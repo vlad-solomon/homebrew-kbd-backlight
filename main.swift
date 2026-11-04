@@ -1,5 +1,6 @@
 import Cocoa
 import CoreGraphics
+import ServiceManagement
 
 // --- Keyboard backlight via private CoreBrightness framework ---
 dlopen("/System/Library/PrivateFrameworks/CoreBrightness.framework/CoreBrightness", RTLD_NOW)
@@ -45,13 +46,34 @@ let callback: CGEventTapCallBack = { _, type, event, _ in
 }
 
 let mask = CGEventMask(1 << CGEventType.keyDown.rawValue) | CGEventMask(1 << CGEventType.keyUp.rawValue)
-guard let tap = CGEvent.tapCreate(tap: .cgSessionEventTap, place: .headInsertEventTap,
-                                  options: .defaultTap, eventsOfInterest: mask,
-                                  callback: callback, userInfo: nil) else {
-    fputs("Failed to create event tap. Grant Accessibility + Input Monitoring to the terminal/binary.\n", stderr)
-    exit(1)
+
+func installTap() -> Bool {
+    guard let tap = CGEvent.tapCreate(tap: .cgSessionEventTap, place: .headInsertEventTap,
+                                      options: .defaultTap, eventsOfInterest: mask,
+                                      callback: callback, userInfo: nil) else { return false }
+    let src = CFMachPortCreateRunLoopSource(nil, tap, 0)
+    CFRunLoopAddSource(CFRunLoopGetMain(), src, .commonModes)
+    CGEvent.tapEnable(tap: tap, enable: true)
+    return true
 }
-let src = CFMachPortCreateRunLoopSource(nil, tap, 0)
-CFRunLoopAddSource(CFRunLoopGetCurrent(), src, .commonModes)
-CGEvent.tapEnable(tap: tap, enable: true)
-CFRunLoopRun()
+
+// --- App lifecycle: background agent, starts at login, waits for permissions ---
+let app = NSApplication.shared
+app.setActivationPolicy(.accessory)
+
+// Register as a login item (macOS 13+). Shows up in System Settings > General > Login Items.
+if SMAppService.mainApp.status != .enabled {
+    try? SMAppService.mainApp.register()
+}
+
+// Ask for permissions (shows the system prompts), then keep retrying until granted.
+let opts = [kAXTrustedCheckOptionPrompt.takeUnretainedValue() as String: true] as CFDictionary
+_ = AXIsProcessTrustedWithOptions(opts)
+_ = CGRequestListenEventAccess()
+
+if !installTap() {
+    Timer.scheduledTimer(withTimeInterval: 2, repeats: true) { t in
+        if installTap() { t.invalidate() }
+    }
+}
+app.run()

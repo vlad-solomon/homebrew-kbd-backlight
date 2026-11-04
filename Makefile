@@ -1,26 +1,21 @@
-PREFIX ?= $(HOME)/.local
-BIN    := $(PREFIX)/bin/mac-kbd-backlight
-PLIST  := $(HOME)/Library/LaunchAgents/com.github.mac-kbd-backlight.plist
+APP  := build/mac-kbd-backlight.app
+EXE  := $(APP)/Contents/MacOS/mac-kbd-backlight
+ZIP  := build/mac-kbd-backlight.zip
 
-kbd: kbd.swift
-	swiftc -O kbd.swift -o kbd
+app: main.swift resources/Info.plist
+	rm -rf $(APP)
+	mkdir -p $(APP)/Contents/MacOS build/tmp
+	swiftc -O -target arm64-apple-macos13.0  main.swift -o build/tmp/arm64
+	swiftc -O -target x86_64-apple-macos13.0 main.swift -o build/tmp/x86_64
+	lipo -create build/tmp/arm64 build/tmp/x86_64 -output $(EXE)
+	cp resources/Info.plist $(APP)/Contents/Info.plist
+	codesign --force --sign - $(APP)
+	rm -rf build/tmp
 
-install: kbd
-	mkdir -p $(PREFIX)/bin
-	cp kbd $(BIN)
-	@echo "Installed to $(BIN)"
-
-# Start at login. Grant $(BIN) Accessibility + Input Monitoring first.
-agent: install
-	sed "s|__BIN__|$(BIN)|" com.github.mac-kbd-backlight.plist > $(PLIST)
-	launchctl bootout gui/$$(id -u) $(PLIST) 2>/dev/null || true
-	launchctl bootstrap gui/$$(id -u) $(PLIST)
-
-uninstall:
-	launchctl bootout gui/$$(id -u) $(PLIST) 2>/dev/null || true
-	rm -f $(PLIST) $(BIN)
+zip: app
+	cd build && ditto -c -k --keepParent mac-kbd-backlight.app mac-kbd-backlight.zip
 
 clean:
-	rm -f kbd
+	rm -rf build
 
-.PHONY: install agent uninstall clean
+.PHONY: app zip clean
