@@ -1,4 +1,4 @@
-# mac-kbd-backlight
+# kbd-backlight
 
 Keyboard backlight shortcuts for MacBooks that don't have dedicated backlight keys (2021+ MacBook Pros, and others). **fn+F1** dims, **fn+F2** brightens. No dependencies, no Karabiner, no menu bar icon.
 
@@ -7,20 +7,20 @@ Keyboard backlight shortcuts for MacBooks that don't have dedicated backlight ke
 ### Homebrew (recommended)
 
 ```sh
-brew install --cask vlad-solomon/kbd-backlight/mac-kbd-backlight
+brew install --cask vlad-solomon/kbd-backlight/kbd-backlight
 ```
 
 It launches right away and registers itself to start at login. Allow it under **System Settings → Privacy & Security → Accessibility** and **Input Monitoring** when prompted. Done. Universal binary (Apple Silicon + Intel), macOS 13+.
 
-Remove with `brew uninstall --cask mac-kbd-backlight` (this also quits it).
+Remove with `brew uninstall --cask kbd-backlight` (this also quits it).
 
 ### Manual
 
-1. Download `mac-kbd-backlight.zip` from [Releases](../../releases), unzip, and move the app to `/Applications`.
-2. The app isn't notarized, so the first time use **right-click → Open** (or `xattr -dr com.apple.quarantine /Applications/mac-kbd-backlight.app`).
+1. Download `kbd-backlight.zip` from [Releases](../../releases), unzip, and move the app to `/Applications`.
+2. The app isn't notarized, so the first time use **right-click → Open** (or `xattr -dr com.apple.quarantine /Applications/kbd-backlight.app`).
 3. Allow Accessibility and Input Monitoring when prompted.
 
-To stop it manually: `pkill -x mac-kbd-backlight`. To stop it starting at login: System Settings → General → Login Items.
+To stop it manually: `pkill -x kbd-backlight`. To stop it starting at login: System Settings → General → Login Items.
 
 ## How it works
 
@@ -33,7 +33,7 @@ To stop it manually: `pkill -x mac-kbd-backlight`. To stop it starting at login:
 Requires Xcode command line tools.
 
 ```sh
-make zip     # builds build/mac-kbd-backlight.app and .zip
+make zip     # builds build/kbd-backlight.app and .zip
 ```
 
 ## Notes

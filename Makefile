@@ -1,6 +1,6 @@
-APP  := build/mac-kbd-backlight.app
-EXE  := $(APP)/Contents/MacOS/mac-kbd-backlight
-ZIP  := build/mac-kbd-backlight.zip
+APP  := build/kbd-backlight.app
+EXE  := $(APP)/Contents/MacOS/kbd-backlight
+ZIP  := build/kbd-backlight.zip
 
 app: main.swift resources/Info.plist
 	rm -rf $(APP)
@@ -13,7 +13,7 @@ app: main.swift resources/Info.plist
 	rm -rf build/tmp
 
 zip: app
-	cd build && ditto -c -k --keepParent mac-kbd-backlight.app mac-kbd-backlight.zip
+	cd build && ditto -c -k --keepParent kbd-backlight.app kbd-backlight.zip
 
 clean:
 	rm -rf build
