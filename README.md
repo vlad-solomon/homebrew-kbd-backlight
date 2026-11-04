@@ -22,6 +22,15 @@ Remove with `brew uninstall --cask kbd-backlight` (this also quits it).
 
 To stop it manually: `pkill -x kbd-backlight`. To stop it starting at login: System Settings → General → Login Items.
 
+## Permissions
+
+macOS will ask for two permissions. Both are required, and neither leaves your Mac (the app makes no network connections):
+
+- **Accessibility**: lets the app intercept the fn+F1 / fn+F2 key presses so it can swallow them.
+- **Input Monitoring**: lets the app see key presses to detect those shortcuts. It only looks at F1/F2 with fn held and ignores everything else.
+
+The prompt only adds the app to the list, so you still need to switch it **on** under System Settings → Privacy & Security → **Accessibility** and **Input Monitoring**. No restart is needed; the app picks it up within a couple of seconds. If the shortcuts do nothing, this is almost always why.
+
 ## How it works
 
 - Brightness is read/set through the private `CoreBrightness` framework (`KeyboardBrightnessClient`).
