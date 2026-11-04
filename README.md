@@ -4,14 +4,23 @@ Keyboard backlight shortcuts for MacBooks that don't have dedicated backlight ke
 
 ## Install
 
-1. Download `mac-kbd-backlight.zip` from [Releases](../../releases) and unzip it.
-2. Move `mac-kbd-backlight.app` to `/Applications`.
-3. Open it. The app isn't notarized, so the first time use **right-click → Open** (or run `xattr -dr com.apple.quarantine /Applications/mac-kbd-backlight.app`).
-4. Allow it under **System Settings → Privacy & Security → Accessibility** and **Input Monitoring** when prompted.
+### Homebrew (recommended)
 
-That's it. It registers itself to start at login and runs in the background. Universal binary (Apple Silicon + Intel), macOS 13+.
+```sh
+brew install --cask vlad-solomon/tap/mac-kbd-backlight
+```
 
-To remove it: turn it off in System Settings → General → Login Items, quit it in Activity Monitor, and delete the app.
+It launches right away and registers itself to start at login. Allow it under **System Settings → Privacy & Security → Accessibility** and **Input Monitoring** when prompted. Done. Universal binary (Apple Silicon + Intel), macOS 13+.
+
+Remove with `brew uninstall --cask mac-kbd-backlight` (this also quits it).
+
+### Manual
+
+1. Download `mac-kbd-backlight.zip` from [Releases](../../releases), unzip, and move the app to `/Applications`.
+2. The app isn't notarized, so the first time use **right-click → Open** (or `xattr -dr com.apple.quarantine /Applications/mac-kbd-backlight.app`).
+3. Allow Accessibility and Input Monitoring when prompted.
+
+To stop it manually: `pkill -x mac-kbd-backlight`. To stop it starting at login: System Settings → General → Login Items.
 
 ## How it works
 
