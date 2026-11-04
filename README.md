@@ -1,4 +1,4 @@
-# kbd-backlight
+# mac-kbd-backlight
 
 Keyboard backlight shortcuts for MacBooks that don't have dedicated backlight keys (2021+ MacBook Pros, and others). **fn+F1** dims, **fn+F2** brightens. One Swift file, no dependencies, no Karabiner.
 
@@ -13,8 +13,8 @@ Keyboard backlight shortcuts for MacBooks that don't have dedicated backlight ke
 Requires Xcode command line tools.
 
 ```sh
-make install     # builds and copies to ~/.local/bin/kbd-backlight
-kbd-backlight    # run in the foreground to try it
+make install     # builds and copies to ~/.local/bin/mac-kbd-backlight
+mac-kbd-backlight    # runs the fn+F1/F2 listener
 ```
 
 On first run macOS will block the event tap. Add the app that launched it (your terminal) under
@@ -26,16 +26,7 @@ On first run macOS will block the event tap. Add the app that launched it (your 
 make agent
 ```
 
-Then grant `~/.local/bin/kbd-backlight` itself Accessibility and Input Monitoring (in the file picker press `⌘⇧G` and paste the path). Remove with `make uninstall`.
-
-## CLI
-
-```sh
-kbd-backlight get        # print current level (0.0-1.0)
-kbd-backlight set 0.5    # set level
-```
-
-With no arguments it runs the hotkey listener.
+Then grant `~/.local/bin/mac-kbd-backlight` itself Accessibility and Input Monitoring (in the file picker press `⌘⇧G` and paste the path). Remove with `make uninstall`.
 
 ## Notes
 

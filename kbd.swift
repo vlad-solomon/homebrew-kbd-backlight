@@ -27,16 +27,6 @@ func setLevel(_ v: Float) {
     _ = unsafeBitCast(client.method(for: setSel), to: SetFn.self)(client, setSel, max(0, min(1, v)), kbID)
 }
 
-// CLI: `kbd get` / `kbd set 0.5` for testing
-let args = CommandLine.arguments
-if args.count >= 2 {
-    switch args[1] {
-    case "get": print(level()); exit(0)
-    case "set" where args.count >= 3: setLevel(Float(args[2]) ?? 0); print(level()); exit(0)
-    default: break
-    }
-}
-
 // --- fn+F1 / fn+F2 hotkeys via event tap ---
 let step: Float = 1.0 / 16.0
 let kF1: Int64 = 122, kF2: Int64 = 120
