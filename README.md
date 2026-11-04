@@ -7,7 +7,7 @@ Keyboard backlight shortcuts for MacBooks that don't have dedicated backlight ke
 ### Homebrew (recommended)
 
 ```sh
-brew install --cask vlad-solomon/tap/mac-kbd-backlight
+brew install --cask vlad-solomon/kbd-backlight/mac-kbd-backlight
 ```
 
 It launches right away and registers itself to start at login. Allow it under **System Settings → Privacy & Security → Accessibility** and **Input Monitoring** when prompted. Done. Universal binary (Apple Silicon + Intel), macOS 13+.
